@@ -2,6 +2,7 @@ package linkedlist
 
 import (
 	"errors"
+	"time"
 )
 
 const (
@@ -16,6 +17,7 @@ const (
 
 type LinkedList struct {
 	headNode *Node
+	CreateDate time.Time
 }
 
 type Node struct {
@@ -43,6 +45,7 @@ func New() LinkedLister {
 	headNode.next = tailNode
 	linkedList := &LinkedList {
 		headNode: headNode,
+		CreateDate: time.Now().UTC(),
 	}
 	return linkedList
 }
@@ -61,10 +64,12 @@ func (n *LinkedList) GetSize() int {
 	}
 	return count
 }
+
 //	链表是否为空
 func (n *LinkedList) IsEmpty() bool {
 	return n.headNode.next.nodeType == TAIL_NODE
 }
+
 //	获取指定索引的结点
 func (n *LinkedList) GetNode(index int) (Node, error) {
 	size := n.GetSize()
@@ -84,7 +89,15 @@ func (n *LinkedList) GetNode(index int) (Node, error) {
 //	return: 第一个匹配到的结点的下标
 //			若没有找到结点，返回 NOT_FOUND
 func (n *LinkedList) FindNode(node Node) int {
-	return 0
+	thisNode := n.headNode.next
+	count:= 0
+	for thisNode.nodeType != TAIL_NODE {
+		count++
+		if thisNode.Value == node.Value {
+			return count
+		}
+	}
+	return NOT_FOUND
 }
 //	向链表中指定索引处插入结点
 func (n *LinkedList) Insert(index int, node Node) error {
