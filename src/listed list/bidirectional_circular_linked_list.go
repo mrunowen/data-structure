@@ -66,8 +66,19 @@ func (n *LinkedList) IsEmpty() bool {
 	return n.headNode.next.nodeType == TAIL_NODE
 }
 //	获取指定索引的结点
-func (n *LinkedList) GetNode(index int) error {
-	return errors.New("")
+func (n *LinkedList) GetNode(index int) (Node, error) {
+	size := n.GetSize()
+	if size == 0 || index < size - 1 {
+		return Node{}, errors.New("index out of range")
+	}
+
+	node := n.headNode
+
+	for i := 0; i <= index; i++ {
+		node = node.next
+	}
+
+	return *node, nil
 }
 //	寻找特定值的结点
 //	return: 第一个匹配到的结点的下标

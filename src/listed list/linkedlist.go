@@ -10,7 +10,7 @@ type LinkedLister interface {
 	//	链表是否为空
 	IsEmpty() bool
 	//	获取指定索引的结点
-	GetNode(index int) error
+	GetNode(index int) (Node, error)
 	//	寻找特定值的结点
 	//	return: 第一个匹配到的结点的下标
 	//			若没有找到结点，返回 NOT_FOUND
