@@ -71,6 +71,7 @@ func (n *LinkedList) GetSize() int {
 	node:= n.headNode.next
 	for node.nodeType == MID_NODE {
 		count++
+		node = node.next
 	}
 	return count
 }
@@ -83,7 +84,7 @@ func (n *LinkedList) IsEmpty() bool {
 //	获取指定索引的结点
 func (n *LinkedList) GetNode(index int) (Node, error) {
 	size := n.GetSize()
-	if size == 0 || index < size - 1  || index < 0 {
+	if size == 0 || index > size - 1  || index < 0 {
 		return Node{}, IndexOutOfRangeException
 	}
 
@@ -112,7 +113,7 @@ func (n *LinkedList) FindNode(node Node) int {
 //	向链表中指定索引处插入结点
 func (n *LinkedList) Insert(index int, node Node) error {
 	size:= n.GetSize()
-	if size == 0 || index < size - 1 || index < 0 {
+	if size == 0 || index > size - 1 || index < 0 {
 		return IndexOutOfRangeException
 	}
 	thisNode:= n.headNode
@@ -142,7 +143,7 @@ func (n *LinkedList) Append(node Node) {
 //	删除链表中指定位置的元素
 func (n *LinkedList) Remove(index int) error {
 	size:= n.GetSize()
-	if size == 0 || index < size - 1 || index < 0 {
+	if size == 0 || index > size - 1 || index < 0 {
 		return IndexOutOfRangeException
 	}
 
