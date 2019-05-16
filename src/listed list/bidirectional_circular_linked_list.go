@@ -186,5 +186,5 @@ func (n *LinkedList) Reverse() {
 }
 //	链表升序排序
 func (n *LinkedList) Sort() {
-	
+	//	未实现
 }
