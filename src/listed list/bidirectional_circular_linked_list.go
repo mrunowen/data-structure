@@ -6,14 +6,17 @@ import (
 )
 
 const (
-	NOT_FOUND = iota
+	//	中间结点
+	MID_NODE = iota
+
+	NOT_FOUND
 	//	头结点
 	HEAD_NODE
 	//	尾结点
 	TAIL_NODE
-	//	中间结点
-	MID_NODE
 )
+
+var IndexOutOfRangeError = errors.New("index out of range")
 
 type LinkedList struct {
 	headNode *Node
@@ -73,8 +76,8 @@ func (n *LinkedList) IsEmpty() bool {
 //	获取指定索引的结点
 func (n *LinkedList) GetNode(index int) (Node, error) {
 	size := n.GetSize()
-	if size == 0 || index < size - 1 {
-		return Node{}, errors.New("index out of range")
+	if size == 0 || index < size - 1  || index < 0 {
+		return Node{}, IndexOutOfRangeError
 	}
 
 	node := n.headNode
@@ -101,11 +104,58 @@ func (n *LinkedList) FindNode(node Node) int {
 }
 //	向链表中指定索引处插入结点
 func (n *LinkedList) Insert(index int, node Node) error {
-	return errors.New("")	
+	size:= n.GetSize()
+	if size == 0 || index < size - 1 || index < 0 {
+		return IndexOutOfRangeError
+	}
+	thisNode:= n.headNode
+	for i := 0; i <= index; i++ {
+		thisNode = thisNode.next
+	}
+	prevNode := thisNode.prev
+	prevNode.next = &node
+	node.prev = prevNode
+	node.next = thisNode
+	thisNode.prev = &node
+
+	return nil
 }
+
+//	向链表尾部添加结点
+func (n *LinkedList) Append(node Node) {
+	thisNode:= n.headNode.next
+	for thisNode.nodeType != TAIL_NODE {
+		thisNode = thisNode.next
+	}
+	prevNode:= thisNode.prev
+	prevNode.next = &node
+	node.prev = prevNode
+	node.next = thisNode
+	thisNode.prev = &node
+}
+
 //	删除链表中指定位置的元素
 func (n *LinkedList) Remove(index int) error {
-	return errors.New("")	
+	size:= n.GetSize()
+	if size == 0 || index < size - 1 || index < 0 {
+		return IndexOutOfRangeError
+	}
+
+	thisNode:= n.headNode
+	for i := 0; i <= index; i++ {
+		thisNode = thisNode.next
+	}
+	prevNode := thisNode.prev
+	nextNode := thisNode.next
+	prevNode.next = nextNode
+	nextNode.prev = prevNode
+
+	thisNode.prev = nil
+	thisNode.next = nil
+	thisNode.nodeType = NOT_FOUND
+	thisNode.Value = ""
+
+	return nil
 }
 //	翻转整个链表
 func (n *LinkedList) Reverse() {

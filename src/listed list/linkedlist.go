@@ -17,6 +17,8 @@ type LinkedLister interface {
 	FindNode(node Node) int
 	//	向链表中指定索引处插入结点
 	Insert(index int, node Node) error
+	//	向链表尾部添加结点
+	Append(node Node)
 	//	删除链表中指定位置的元素
 	Remove(index int) error
 	//	翻转整个链表
