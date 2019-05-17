@@ -5,9 +5,11 @@ import (
 	"fmt"
 )
 
+var list LinkedLister
+
 //	测试 New
 func TestLinkedList(t *testing.T) {
-	list:= New()
+	list = New()
 	println("通过 New() 实例化: list")
 	println("测试 GetSize(), 预计： 0")
 	size:= list.GetSize()
@@ -26,8 +28,6 @@ func TestLinkedList(t *testing.T) {
 }
 
 func TestAppend(t *testing.T) {
-	list:= New()
-	
 	node:= *NewNode()
 	node.Value = 2
 
