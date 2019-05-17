@@ -6,10 +6,9 @@ import (
 )
 
 const (
+	NOT_FOUND = -1
 	//	中间结点
 	MID_NODE = iota
-
-	NOT_FOUND
 	//	头结点
 	HEAD_NODE
 	//	尾结点
@@ -19,8 +18,8 @@ const (
 var IndexOutOfRangeException = errors.New("index out of range")
 
 type LinkedList struct {
-	headNode *Node
-	tailNode *Node
+	headNode   *Node
+	tailNode   *Node
 	CreateDate time.Time
 }
 
@@ -38,21 +37,21 @@ type Node struct {
 //	生成一个双向循环链表
 func New() LinkedLister {
 	headNode, tailNode := newHeadNode()
-	linkedList := &LinkedList {
-		headNode: headNode,
-		tailNode: tailNode,
+	linkedList := &LinkedList{
+		headNode:   headNode,
+		tailNode:   tailNode,
 		CreateDate: time.Now().UTC(),
 	}
 	return linkedList
 }
 
 func newHeadNode() (headNode, tailNode *Node) {
-	headNode = &Node {
+	headNode = &Node{
 		nodeType: HEAD_NODE,
 	}
-	tailNode = &Node {
-		prev: headNode,
-		next: headNode,
+	tailNode = &Node{
+		prev:     headNode,
+		next:     headNode,
 		nodeType: TAIL_NODE,
 	}
 	headNode.prev = tailNode
@@ -62,13 +61,13 @@ func newHeadNode() (headNode, tailNode *Node) {
 
 //	生成一个结点
 func NewNode() *Node {
-	return &Node { nodeType: MID_NODE }
+	return &Node{nodeType: MID_NODE}
 }
 
 //	返回链表元素个数
 func (n *LinkedList) GetSize() int {
 	count := 0
-	node:= n.headNode.next
+	node := n.headNode.next
 	for node.nodeType == MID_NODE {
 		count++
 		node = node.next
@@ -84,7 +83,7 @@ func (n *LinkedList) IsEmpty() bool {
 //	获取指定索引的结点
 func (n *LinkedList) GetNode(index int) (Node, error) {
 	size := n.GetSize()
-	if size == 0 || index > size - 1  || index < 0 {
+	if size == 0 || index > size-1 || index < 0 {
 		return Node{}, IndexOutOfRangeException
 	}
 
@@ -96,27 +95,30 @@ func (n *LinkedList) GetNode(index int) (Node, error) {
 
 	return *node, nil
 }
+
 //	寻找特定值的结点
 //	return: 第一个匹配到的结点的下标
 //			若没有找到结点，返回 NOT_FOUND
 func (n *LinkedList) FindNode(node Node) int {
 	thisNode := n.headNode.next
-	count:= 0
+	count := 0
 	for thisNode.nodeType != TAIL_NODE {
-		count++
 		if thisNode.Value == node.Value {
 			return count
 		}
+		count++
+		thisNode = thisNode.next
 	}
 	return NOT_FOUND
 }
+
 //	向链表中指定索引处插入结点
 func (n *LinkedList) Insert(index int, node Node) error {
-	size:= n.GetSize()
-	if size == 0 || index > size - 1 || index < 0 {
+	size := n.GetSize()
+	if size == 0 || index > size-1 || index < 0 {
 		return IndexOutOfRangeException
 	}
-	thisNode:= n.headNode
+	thisNode := n.headNode
 	for i := 0; i <= index; i++ {
 		thisNode = thisNode.next
 	}
@@ -131,9 +133,9 @@ func (n *LinkedList) Insert(index int, node Node) error {
 
 //	向链表尾部添加结点
 func (n *LinkedList) Append(node Node) {
-	tailNode:= n.tailNode
+	tailNode := n.tailNode
 
-	prevNode:= tailNode.prev
+	prevNode := tailNode.prev
 	prevNode.next = &node
 	node.prev = prevNode
 	node.next = tailNode
@@ -142,12 +144,12 @@ func (n *LinkedList) Append(node Node) {
 
 //	删除链表中指定位置的元素
 func (n *LinkedList) Remove(index int) error {
-	size:= n.GetSize()
-	if size == 0 || index > size - 1 || index < 0 {
+	size := n.GetSize()
+	if size == 0 || index > size-1 || index < 0 {
 		return IndexOutOfRangeException
 	}
 
-	thisNode:= n.headNode
+	thisNode := n.headNode
 	for i := 0; i <= index; i++ {
 		thisNode = thisNode.next
 	}
@@ -163,28 +165,25 @@ func (n *LinkedList) Remove(index int) error {
 
 	return nil
 }
+
 //	翻转整个链表
 func (n *LinkedList) Reverse() {
-	size:= n.GetSize()
 	//	若链表除了头尾结点外没有结点或只有一个
 	//	那么翻不翻转都无所谓了
-	if size <= 1 {
+	if n.GetSize() <= 1 {
 		return
 	}
-
+	
+	thisNode := n.tailNode.prev
 	newHead, newTail := newHeadNode()
-	newNode:= newHead
-	thisNode:= n.tailNode.prev
+	n.headNode = newHead
+	n.tailNode = newTail
 	for thisNode.nodeType != HEAD_NODE {
-		newNode.next = thisNode
-		thisNode.prev = newNode
-		newNode = thisNode
+		n.Append(*thisNode)
 		thisNode = thisNode.prev
 	}
-	newNode.next = newTail
-	newTail.prev = newNode
-	n.headNode = newHead
 }
+
 //	链表升序排序
 func (n *LinkedList) Sort() {
 	//	未实现
