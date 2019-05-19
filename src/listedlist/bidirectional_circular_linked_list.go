@@ -173,7 +173,7 @@ func (n *LinkedList) Reverse() {
 	if n.GetSize() <= 1 {
 		return
 	}
-	
+
 	thisNode := n.tailNode.prev
 	newHead, newTail := newHeadNode()
 	n.headNode = newHead

@@ -163,6 +163,22 @@ func TestReverse(t *testing.T) {
 	if thisNode.Value != 1 {
 		t.Fatal("the value at index 1 error, is: ", thisNode.Value)
 	}
-	print("the value at index 0 should be 1, is: ", thisNode.Value, "\n")
+	print("the value at index 1 should be 1, is: ", thisNode.Value, "\n")
 
+}
+
+func TestSort(t *testing.T) {
+	list.Sort()
+	fmt.Println("sorted")
+	thisNode, err := list.GetNode(0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println("the value of list at index 0 is: ", thisNode.Value)
+
+	thisNode, err = list.GetNode(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println("the value of list at index 1 is: ", thisNode.Value)
 }
