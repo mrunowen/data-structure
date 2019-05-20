@@ -4,7 +4,7 @@
 package stack
 
 //	栈接口
-type Stack interface {
+type Stacker interface {
 	//	获取栈的长度
 	GetLen() int
 	//	进栈
@@ -22,6 +22,11 @@ type Elem struct {
 	Value int
 }
 
+//	返回一个空的栈
+func New() Stacker {
+	return &MyStack{}
+}
+
 func (m *MyStack) GetLen() int {
 	return len(m.data)
 }
@@ -35,8 +40,7 @@ func (m *MyStack) Pop() *Elem {
 	if len < 1 {
 		return nil
 	}
-	popElem := m.data[len - 1 : len][0]
-	m.data = m.data[: len - 1]
+	popElem := m.data[len-1 : len][0]
+	m.data = m.data[:len-1]
 	return &popElem
 }
-
