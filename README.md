@@ -30,3 +30,12 @@
 	Push(elem Elem)
 	//	出栈
 	Pop() *Elem
+
+## 队列
+实现接口:
+	//	获取队列长度
+	GetLen() int
+	//	进队
+	Enquenen（elem Elem)
+	//	出队
+	Dequenen() *Elem
